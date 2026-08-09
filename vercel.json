@@ -1,0 +1,43 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "services": {
+    "backend": {
+      "root": "backend",
+      "framework": "express",
+      "entrypoint": "src/server.js",
+      "devCommand": "npm run dev",
+      "buildCommand": "npm run migrate",
+      "functions": {
+        "src/server.js": {
+          "maxDuration": 300
+        }
+      }
+    },
+    "frontend": {
+      "root": "frontend",
+      "framework": "nextjs",
+      "buildCommand": "npm run build",
+      "devCommand": "npm run dev"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": {
+        "service": "backend"
+      }
+    },
+    {
+      "source": "/socket.io/(.*)",
+      "destination": {
+        "service": "backend"
+      }
+    },
+    {
+      "source": "/(.*)",
+      "destination": {
+        "service": "frontend"
+      }
+    }
+  ]
+}
